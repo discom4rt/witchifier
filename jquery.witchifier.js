@@ -1,5 +1,5 @@
 // TODO: Bookmarklet
-(function( $ ) {
+(function( window, $ ) {
 
   /**
    * Witchifier manages the transformation of normal characters to
@@ -29,18 +29,18 @@
    * @param {options} object The current options for witchifier.
    **/
   Witchifier.translate = function( value, options ) {
-    var shouldNotRandomize = !options.randomize,
+    var shouldNotRandomize = options && !options.randomize && options.dictionary,
       targetTranslations,
       randomIndex,
       translation;
 
-    if( options.dictionary[ value ] && shouldNotRandomize ) {
-      return options.dictionary[ value ];
-    }
-
     targetTranslations = this.DICTIONARY[ value ];
     if( !targetTranslations ) {
       return value;
+    }
+
+    if( shouldNotRandomize && options.dictionary[ value ] ) {
+      return options.dictionary[ value ];
     }
 
     randomIndex = Math.floor( Math.random() * targetTranslations.length );
@@ -61,6 +61,7 @@
       translation,
       translatedEvent;
 
+      // if this is a user generated keypress
       if( event.originalEvent ) {
         event.preventDefault();
         $target.sendkeys( this.translate( key, event.data ) );
@@ -78,7 +79,7 @@
       i = 0,
       translatedText = '';
 
-    // IE
+    // IE (do I actually care?)
     if ( window.clipboardData && window.clipboardData.getData ) {
       pastedText = window.clipboardData.getData( 'Text' );
     // legitimate browsers
@@ -194,4 +195,7 @@
     });
   };
 
-}( jQuery ));
+  /* expose the witchifier to the global scope */
+  window.Witchifier = Witchifier;
+
+}( window, jQuery ));
