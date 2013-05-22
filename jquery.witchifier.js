@@ -61,7 +61,7 @@
       translation = this.translate( key, event.data );
 
       // if this is a user generated keypress
-      if( event.originalEvent && key !== translation ) {
+      if( event.originalEvent ) {
         event.preventDefault();
         $target.sendkeys( translation );
       }
