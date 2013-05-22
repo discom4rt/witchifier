@@ -58,13 +58,12 @@
   Witchifier.onkeypress  = function( event ) {
     var $target = $(event.target),
       key = String.fromCharCode( event.which ),
-      translation,
-      translatedEvent;
+      translation = this.translate( key, event.data );
 
       // if this is a user generated keypress
-      if( event.originalEvent ) {
+      if( event.originalEvent && key !== translation ) {
         event.preventDefault();
-        $target.sendkeys( this.translate( key, event.data ) );
+        $target.sendkeys( translation );
       }
   };
 
