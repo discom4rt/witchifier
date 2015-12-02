@@ -63,7 +63,7 @@
       translation = this.translate( key, event.data );
 
       // if this is a user generated keypress
-      if( event.originalEvent ) {
+      if( event.originalEvent && this.CHAR_CODES_TO_SKIP.indexOf( event.which ) === -1) {
         event.preventDefault();
         $target.sendkeys( translation );
       }
@@ -154,6 +154,8 @@
       '\\':  ['⋱'],
       '|' : ['⦙', '⦚', '∤', '']
     };
+
+  Witchifier.CHAR_CODES_TO_SKIP = [8];
 
 
   /**
